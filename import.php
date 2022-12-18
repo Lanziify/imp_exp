@@ -1,6 +1,6 @@
 <?php
 // Define constants
-define('UPLOAD_DIR', '/var/uploaded_files/');
+define('UPLOAD_DIR', 'C:\xampp\htdocs\imp_exp');
 define('MAXSIZE', 7340032); // allow max 7 MB
 
 // allowed file types
@@ -31,7 +31,6 @@ if (!empty($_FILES)) {
 } else {
     $response = 'Please upload CSV file';
 }
-echo $response;
 
 // allowed file extension
 function allowedfile($tempfile, $destpath)
@@ -62,7 +61,6 @@ function handleUpload()
     } else {
         $response = 'Error: uploaded file size or type is not valid.';
     }
-    return $response;
 }
 
 // store data in database
@@ -75,7 +73,7 @@ function insertCSV($filename)
     }
     if ($fileHandle = fopen($filename, "r")) {
         while (($row = fgetcsv($fileHandle, 0, ",")) !== FALSE) {
-            $insert = "INSERT into emplpyee(emp_name,email,phone) values('$row[0]','$row[1]','$row[2]')";
+            $insert = "INSERT into employee(emp_name,email,phone) values('$row[0]','$row[1]','$row[2]')";
             if (mysqli_query($conn, $insert)) {
                 echo 'Data inserted successfully';
             } else {
@@ -87,27 +85,3 @@ function insertCSV($filename)
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-
-<body>
-    <form class="md-form" action='#' method="post" enctype="multipart/form-data">
-        <div class="file-field">
-            <iv class="btn btn-primary btn-sm float-left">
-                <span>Choose file</span>
-                <input type="file" name="file">
-        </div>
-        </div><br /><br />
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-</body>
-
-</html>
